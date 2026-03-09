@@ -1,0 +1,10 @@
+Flask
+flask-cors
+supabase
+python-dotenv
+flask-bcrypt 
+flask-jwt-extended 
+Pillow 
+flask-sqlalchemy
+psycopg2-binary
+flask-migrate
