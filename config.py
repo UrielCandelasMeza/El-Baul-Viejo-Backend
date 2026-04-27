@@ -19,7 +19,7 @@ class Config:
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
     JWT_TOKEN_LOCATION = ["cookies"]
     JWT_COOKIE_SECURE = False
-    JWT_COOKIE_SAMESITE = "Lax"
+    # JWT_COOKIE_SAMESITE = "Lax"
     JWT_COOKIE_CSRF_PROTECT = False
     JWT_ACCESS_TOKEN_EXPIRES = 900       # 15 min
     JWT_REFRESH_TOKEN_EXPIRES = 2592000  # 30 days
@@ -46,11 +46,13 @@ class Config:
 class DevelopmentConfig(Config):
     """Dev configuration"""
     DEBUG = True
+    JWT_COOKIE_SAMESITE = "Lax"
 
 
 class ProductionConfig(Config):
     DEBUG = False
     JWT_COOKIE_SECURE = True  # HTTPS
+    JWT_COOKIE_SAMESITE = "None"
 
     # Pooler transaction
     # Migrations still uses DATABASE_URL
