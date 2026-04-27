@@ -224,15 +224,11 @@ def update_piece(piece_id: str):
 
 
 def delete_piece(piece_id: str):
-    """Deletes a piece and its photos from the bucket"""
+    """Deletes a piece record from the database, keeping its photos in the bucket"""
     piece = db.session.get(Piece, piece_id)
 
     if not piece:
         return jsonify({"success": False, "message": "Pieza no encontrada"}), 404
-
-    paths = [url.split(f"{bucket_name}/")[-1].split("?")[0] for url in piece.photos]
-    if paths:
-        supabase.storage.from_(bucket_name).remove(paths)
 
     db.session.delete(piece)
     db.session.commit()

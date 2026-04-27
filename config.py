@@ -40,6 +40,8 @@ class Config:
         },
     }
 
+    FRONTEND_URL = os.getenv("FRONTEND_URL")
+
 
 class DevelopmentConfig(Config):
     """Dev configuration"""
