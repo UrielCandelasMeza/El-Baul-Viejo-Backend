@@ -1,6 +1,6 @@
 """JWT Utils"""
 from flask import jsonify, make_response, request
-from config import Config
+from config import get_config
 from functools import wraps
 from flask_jwt_extended import (
     create_access_token,
@@ -9,6 +9,8 @@ from flask_jwt_extended import (
     get_jwt_identity,
 )
 
+
+config = get_config()
 
 def generate_tokens(user_id, user_data: dict = None):
     """Genera access y refresh token y los setea en cookies."""
@@ -25,15 +27,15 @@ def generate_tokens(user_id, user_data: dict = None):
         "access_token_cookie",
         access_token,
         httponly=True,
-        secure=Config.JWT_COOKIE_SECURE,
-        samesite=Config.JWT_COOKIE_SAMESITE
+        secure=config.JWT_COOKIE_SECURE,
+        samesite=config.JWT_COOKIE_SAMESITE
     )
     response.set_cookie(
         "refresh_token_cookie",
         refresh_token,
         httponly=True,
-        secure=Config.JWT_COOKIE_SECURE,
-        samesite=Config.JWT_COOKIE_SAMESITE
+        secure=config.JWT_COOKIE_SECURE,
+        samesite=config.JWT_COOKIE_SAMESITE
     )
 
     return response
@@ -68,8 +70,8 @@ def jwt_required_cookie(f):
                     "access_token",
                     new_access_token,
                     httponly=True,
-                    secure=Config.JWT_COOKIE_SECURE,
-                    samesite=Config.JWT_COOKIE_SAMESITE
+                    secure=config.JWT_COOKIE_SECURE,
+                    samesite=config.JWT_COOKIE_SAMESITE
                 )
                 return response
 
