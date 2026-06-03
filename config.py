@@ -40,13 +40,14 @@ class Config:
         },
     }
 
-    FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 
 class DevelopmentConfig(Config):
     """Dev configuration"""
     DEBUG = True
     JWT_COOKIE_SAMESITE = "Lax"
+    FRONTEND_URL = "http://localhost:5173"
+
 
 
 class ProductionConfig(Config):
@@ -69,11 +70,13 @@ class ProductionConfig(Config):
             "connect_timeout": 10,
         },
     }
+    FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    FRONTEND_URL = "http://localhost:5173"
 
 
 _config_map = {

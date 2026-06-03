@@ -2,6 +2,7 @@ from flask import jsonify, request
 from flask_jwt_extended import get_jwt_identity
 from extensions import db
 from src.models.piece_model import Piece, PieceStatus
+from src.lib.pieces import _get_all_pieces, _get_available_pieces, _get_one_piece, _search_by_category, _search_by_name
 from src.lib.files import allowed_file, build_file_path, MAX_SIZE
 from supabase_client import supabase
 
@@ -59,6 +60,11 @@ def create_piece():
 
     try:
         price = float(price)
+        if price <= 0:
+            return jsonify({"success": False, "message": "El precio debe ser mayor a cero"}), 400
+    
+        if price > 50000:
+            return jsonify({"success": False, "message": "El precio debe ser menor a 50,000"}), 400
     except ValueError:
         return jsonify({
                 "success": False, 
@@ -85,9 +91,7 @@ def create_piece():
 
 def get_available_pieces():
     """Gets all available pieces from the db"""
-    pieces = db.session.execute(
-        db.select(Piece).where(Piece.status == PieceStatus.AVAILABLE)
-    ).scalars().all()
+    pieces = _get_available_pieces()
 
     return jsonify({
         "success": True,
@@ -97,9 +101,7 @@ def get_available_pieces():
 
 def get_all_pieces():
     """Gets all pieces from the db"""
-    pieces = db.session.execute(
-        db.select(Piece)
-    ).scalars().all()
+    pieces = _get_all_pieces()
 
     return jsonify({
         "success": True,
@@ -109,7 +111,7 @@ def get_all_pieces():
 
 def get_one_piece(piece_id: str):
     """Get one piece from the db"""
-    piece = db.session.get(Piece, piece_id)
+    piece = _get_one_piece(piece_id)
 
     if not piece:
         return jsonify({"success": False, "message": "Pieza no encontrada"}), 404
@@ -118,6 +120,21 @@ def get_one_piece(piece_id: str):
         "success": True,
         "piece": piece.to_dict()
     }), 200
+
+def search_name_categories(query: str):
+
+    if not query:
+        return jsonify({"success": False, "message": "La consulta no puede ser nula"}), 400
+
+    pieces_by_name = _search_by_name(query)
+    pieces_by_category, matched_categories = _search_by_category(query)
+
+    return jsonify({
+        "success": True,
+        "pieces_by_name": [p.to_dict() for p in pieces_by_name],
+        "pieces_by_category": [p.to_dict() for p in pieces_by_category],
+        "matched_categories": [c.to_dict() for c in matched_categories],
+    })
 
 
 def update_piece(piece_id: str):
@@ -144,7 +161,12 @@ def update_piece(piece_id: str):
 
     if price:
         try:
-            piece.price = float(price)
+            price_float = float(price)
+            if price_float <= 0:
+                return jsonify({"success": False, "message": "El precio debe ser mayor a cero"}), 400
+            if price_float > 50000:
+                return jsonify({"success": False, "message": "El precio debe ser menor a 50,000"}), 400
+            piece.price = price_float
         except ValueError:
             return jsonify({"success": False, "message": "Precio inválido"}), 400
 

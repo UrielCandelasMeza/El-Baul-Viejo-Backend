@@ -18,6 +18,8 @@ config = get_config()
 
 def init_extensions(app):
     """Initialize extensions before the app"""
+
+    print(config.FRONTEND_URL)
     cors.init_app(
         app,
         supports_credentials=True,

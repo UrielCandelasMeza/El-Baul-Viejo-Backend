@@ -77,6 +77,7 @@ def jwt_required_cookie(f):
 
             except Exception as e:
                 print(e)
+                print("no se que pex")
                 return jsonify({"error": "Sesión expirada, inicia sesión de nuevo"}), 401
 
     return decorated

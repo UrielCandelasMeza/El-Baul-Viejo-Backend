@@ -7,6 +7,7 @@ from src.controllers.piece_controller import (
     get_one_piece,
     update_piece,
     delete_piece,
+    search_name_categories
 )
 from src.lib.jwt import jwt_required_cookie
 
@@ -18,3 +19,4 @@ piece_bp.route("/delete/<string:piece_id>", methods=["DELETE"])(jwt_required_coo
 piece_bp.route("/get", methods=["GET"])(get_all_pieces)
 piece_bp.route("/get/available", methods=["GET"])(get_available_pieces)
 piece_bp.route("/get/<string:piece_id>", methods=["GET"])(get_one_piece)
+piece_bp.route("/search/<string:query>", methods=["GET"])(search_name_categories)
