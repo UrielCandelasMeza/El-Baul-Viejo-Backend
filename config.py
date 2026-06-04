@@ -39,6 +39,9 @@ class Config:
             "connect_timeout": 10,
         },
     }
+    RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+    SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+    RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 
 
 

@@ -7,6 +7,7 @@ from extensions import init_extensions
 from src.routes.auth_routes import auth_bp
 from src.routes.category_routes import category_bp
 from src.routes.piece_routes import piece_bp
+from src.routes.email_routes import email_bp
 
 load_dotenv()
 
@@ -22,6 +23,7 @@ def create_app() -> Flask:
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(category_bp, url_prefix="/api/category")
     app.register_blueprint(piece_bp, url_prefix="/api/piece")
+    app.register_blueprint(email_bp, url_prefix="/api/email")
 
     return app
 
