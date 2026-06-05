@@ -51,9 +51,9 @@ def send_email_to_user(name, email, message):
     """
 
     params = {
-        "from": config.SENDER_EMAIL,
+        "from": f"Notificaciones {config.SENDER_EMAIL}",
         "to": config.RECEIVER_EMAIL,
-        "reply_to": email,
+        "reply_to": [email],
         "subject": f"El Baúl Viejo - Mensaje de {name}",
         "html": html_content
     }

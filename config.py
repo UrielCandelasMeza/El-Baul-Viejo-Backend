@@ -40,7 +40,6 @@ class Config:
         },
     }
     RESEND_API_KEY = os.getenv("RESEND_API_KEY")
-    SENDER_EMAIL = os.getenv("SENDER_EMAIL")
     RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 
 
@@ -50,6 +49,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     JWT_COOKIE_SAMESITE = "Lax"
     FRONTEND_URL = "http://localhost:5173"
+    SENDER_EMAIL = "onboarding@resend.dev"
 
 
 
@@ -74,12 +74,14 @@ class ProductionConfig(Config):
         },
     }
     FRONTEND_URL = os.getenv("FRONTEND_URL")
+    SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     FRONTEND_URL = "http://localhost:5173"
+    SENDER_EMAIL = "onboarding@resend.dev"
 
 
 _config_map = {
